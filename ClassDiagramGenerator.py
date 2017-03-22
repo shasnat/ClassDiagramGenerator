@@ -1,12 +1,21 @@
 #!/usr/bin/python
+from subprocess import call
 
 class ClassDiagramGenerator:
 	"""A class that generates a graph of files given a root directory"""
-	def __init__(self, rootDirectory):
-		# super(ClassDiagramGenerator, self).__init__()
+	def __init__(self, rootDirectory, fileExtension):
 		self.rootDirectory = rootDirectory
-		print(self.rootDirectory)
+		self.fileExtension = fileExtension
+		files = self.getFiles(self.rootDirectory, self.fileExtension)
+		print("shay\n\n")
+		print(files)
 
+
+	def getFiles(self, rootDirectory, fileExtension):
+		files = {};
+		# list all files in root directory ending in fileExtension
+		# files = call(['ls ' + rootDirectory + '*.'+ fileExtension])
+		return files;
 
 class Vertex:
     def __init__(self, node):
