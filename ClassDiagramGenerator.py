@@ -1,5 +1,5 @@
 #!/usr/bin/python
-from subprocess import call
+from glob import glob
 
 class ClassDiagramGenerator:
 	"""A class that generates a graph of files given a root directory"""
@@ -7,15 +7,58 @@ class ClassDiagramGenerator:
 		self.rootDirectory = rootDirectory
 		self.fileExtension = fileExtension
 		files = self.getFiles(self.rootDirectory, self.fileExtension)
-		print("shay\n\n")
-		print(files)
 
-
+	# Return a list of all files in root directory and sub directories ending in fileExtension
 	def getFiles(self, rootDirectory, fileExtension):
-		files = {};
-		# list all files in root directory ending in fileExtension
-		# files = call(['ls ' + rootDirectory + '*.'+ fileExtension])
+		files = glob(rootDirectory + '/**/*.'+ fileExtension, recursive=True)
 		return files;
+
+	# Returns a directed graph of files
+	def buildGraph(self, files):
+		graph = Graph()
+		#map of filename to Vertex
+		createdVertexes = dict()
+		#for each file in files
+		for fileName in files:
+			print(fileName)
+			#get or create vertex with file path as value
+			currentVertex = None
+			if filename in createdVertexes:
+				currentVertex = createdVertexes[fileName]
+			else:
+				currentVertex = Vertex(fileName)
+				createdVertexes[fileName] = currentVertex
+				graph.add_vertex(currentVertex)
+			#get referenced files
+			referencedFiles = self.getReferencedFiles(files, fileName)
+			#for each referenced file
+			for referencedFile in referencedFiles:
+				#if file was added to graph, get node
+				referencedNode = None
+				if referencedFile in createdVertexes:
+					referencedNode = createdVertexes[referencedFile]
+				#else create new node
+				else:
+					referencedNode = Vertex(referencedFile)
+					createdVertexes[referencedFile] = referencedNode
+					graph.add_vertex(referencedNode)
+				#add node as neighbor
+				currentVertex.add_neighbor(referencedNode)
+		return graph
+
+	# Returns a list of all files in 'files' referenced by 'currentFile'
+	def getReferencedFiles(self, files, currentFile):
+		referencedFiles = ['universalFile.py']
+		#open currentFile
+		#parse import statements
+		#for each file in files
+		for file in files:
+			#if file is mentioned in import statements
+			if True:
+				#add to referencedFiles
+				getReferencedFiles.append(referencedFile)
+				
+		return referencedFiles
 
 class Vertex:
     def __init__(self, node):
